@@ -6,8 +6,8 @@ import java.util.Stack;
 
 public class Maze
 {
-    int height = 10;
-    int width = 10;
+    int height = 70;
+    int width = 100;
     Cell grid[][];
     Random rand = new Random();
     Stack<Cell> mazeStack = new Stack<Cell>();
@@ -15,10 +15,11 @@ public class Maze
     public Maze()
     {
        grid = new Cell[width][height];
-       for (int i = 0; i<height; i++){
-           for (int j = 0;j<width; j++){
+       for (int i = 0; i<width; i++){
+           for (int j = 0;j<height; j++){
                grid [i][j]= new Cell();
-               grid[i][j].space = String.valueOf(i) +' '+ String.valueOf(j);
+               grid [i][j].iValue = i;
+               grid[i][j].jValue = j;
            }
        }
     }
@@ -102,6 +103,8 @@ public class Maze
                 if (sidesChecked == 4) {
                     foundPath = true;
                     current = mazeStack.pop();
+                    i = current.iValue;
+                    j = current.jValue;
                 }
             }
         } while(!mazeStack.isEmpty());
