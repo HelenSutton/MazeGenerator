@@ -1,11 +1,13 @@
 package mazeGen;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 public class Maze
 {
-    int height = 20;
-    int width = 20;
+    int height = 10;
+    int width = 10;
     Cell grid[][];
     Random rand = new Random();
     Stack<Cell> mazeStack = new Stack<Cell>();
@@ -13,9 +15,10 @@ public class Maze
     public Maze()
     {
        grid = new Cell[width][height];
-       for (int i = 0; i<width; i++){
-           for (int j = 0;j<height; j++){
+       for (int i = 0; i<height; i++){
+           for (int j = 0;j<width; j++){
                grid [i][j]= new Cell();
+               grid[i][j].space = String.valueOf(i) +' '+ String.valueOf(j);
            }
        }
     }
@@ -39,92 +42,70 @@ public class Maze
             current.visited = true;
             foundPath = false;
             while (!foundPath)
-            if (random == 0)
             {
-                if (j == 0 || grid [i][j--].visited )
-                {
-                    sidesChecked++;
-                    random++;
+                if (random == 0) {
+                    if (j == 0 || grid[i][j-1].visited) {
+                        sidesChecked++;
+                        random++;
+                    } else
+                        {
+                        foundPath = true;
+                        current.top = false;
+                        mazeStack.push(current);
+                        j--;
+                        current = grid[i][j];
+                        current.bottom = false;
+                    }
                 }
-                else
-                {
+                if (random == 1 && sidesChecked < 4) {
+                    if (j == height-1 || grid[i][j+1].visited) {
+                        sidesChecked++;
+                        random++;
+                    } else
+                        {
+                        foundPath = true;
+                        current.bottom = false;
+                        mazeStack.push(current);
+                        j++;
+                        current = grid[i][j];
+                        current.top = false;
+                    }
+                }
+                if (random == 2 && sidesChecked < 4) {
+                    if (i == 0 || grid[i-1][j].visited) {
+                        sidesChecked++;
+                        random++;
+                    }
+                    else {
+                        foundPath = true;
+                        current.left = false;
+                        mazeStack.push(current);
+                        i--;
+                        current = grid[i][j];
+                        current.right = false;
+                    }
+                }
+                if (random == 3 && sidesChecked < 4) {
+                    if (i == width-1 || grid[i+1][j].visited) {
+                        sidesChecked++;
+                        random = 0;
+                    }
+                    else {
+                        foundPath = true;
+                        current.right = false;
+                        mazeStack.push(current);
+                        i++;
+                        current = grid[i][j];
+                        current.left = false;
+                    }
+                }
+                if (sidesChecked == 4) {
                     foundPath = true;
-                    current.top = false;
-                    mazeStack.push(current);
-                    j--;
-                    current = grid[i][j];
-                    current.bottom = false;
+                    current = mazeStack.pop();
                 }
             }
-            if (random == 1 && sidesChecked < 4)
-            {
-                if (j == height-- || grid [i][j++].visited)
-                {
-                    sidesChecked++;
-                    random++;
-                }
-                else
-                {
-                    foundPath = true;
-                    current.bottom = false;
-                    mazeStack.push(current);
-                    j++;
-                    current = grid [i][j];
-                    current.top = false;
-                }
-            }
-            if (random == 2 && sidesChecked < 4)
-            {
-                if (i == 0 || grid [i--][j].visited)
-                {
-                    sidesChecked++;
-                    random++;
-                }
-                else
-                {
-                    foundPath = true;
-                    current.left = false;
-                    mazeStack.push(current);
-                    i--;
-                    current = grid [i][j];
-                    current.right = false;
-                }
-            }
-            if (random == 3 && sidesChecked < 4)
-            {
-                if (i == width-- || grid [i++][j].visited)
-                {
-                    sidesChecked++;
-                    random++;
-                }
-                else
-                {
-                    foundPath = true;
-                    current.right = false;
-                    mazeStack.push(current);
-                    i++;
-                    current = grid[i][j];
-                    current.left = false;
-                }
-            }
-            if (sidesChecked == 4)
-            {
-                foundPath = true;
-                current = mazeStack.pop();
-            }
-
-        }
-        while(!mazeStack.empty());
+        } while(!mazeStack.isEmpty());
     }
-    public void print (){
-        for (int i = 0; i<width; i++){
-            for (int j = 0;j<height; j++){
-                 System.out.println("visited = "+ grid [i][j].visited + " top " +grid [i][j].top
-                 + "bottom " + grid [i][j].bottom);
-            }
-        }
 
-
-    }
 }
 

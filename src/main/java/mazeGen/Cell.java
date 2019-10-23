@@ -5,5 +5,6 @@ public class Cell {
     protected boolean left = true;
     protected boolean right = true;
     protected boolean visited = false;
+    String space;
 
 }
