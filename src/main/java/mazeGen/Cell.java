@@ -7,5 +7,6 @@ public class Cell {
     protected boolean visited = false;
     protected int iValue;
     protected int jValue;
+    protected boolean solveVisited = false;
 
 }

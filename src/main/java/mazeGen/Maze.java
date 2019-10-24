@@ -6,11 +6,12 @@ import java.util.Stack;
 
 public class Maze
 {
-    int height = 70;
-    int width = 100;
+    int height = 50;
+    int width = 50;
     Cell grid[][];
     Random rand = new Random();
     Stack<Cell> mazeStack = new Stack<Cell>();
+    Stack<Cell> mazeSolveStack = new Stack <Cell>();
 
     public Maze()
     {
@@ -22,6 +23,7 @@ public class Maze
                grid[i][j].jValue = j;
            }
        }
+       this.createMaze();
     }
 
     public void createMaze()
@@ -100,7 +102,7 @@ public class Maze
                         current.left = false;
                     }
                 }
-                if (sidesChecked == 4) {
+                if (sidesChecked == 4 ) {
                     foundPath = true;
                     current = mazeStack.pop();
                     i = current.iValue;
@@ -108,6 +110,60 @@ public class Maze
                 }
             }
         } while(!mazeStack.isEmpty());
+    }
+
+    public void solveMaze()
+    {
+        Cell exit = grid[width-1][height-1];
+        int i = 0;
+        int j = 0;
+        Cell current = grid[i][j];
+        mazeSolveStack.push(current);
+        current.solveVisited = true;
+        while (!(current == exit))
+        {
+            if (grid[i][j] != grid[0][0] && !grid[i][j].top && !grid[i][j-1].solveVisited)
+            {
+                j--;
+                current = grid[i][j];
+                mazeSolveStack.push(current);
+                current.solveVisited = true;
+            }
+            else if(!grid[i][j].bottom && !grid[i][j+1].solveVisited )
+            {
+                j++;
+                current = grid[i][j];
+                mazeSolveStack.push(current);
+                current.solveVisited = true;
+            }
+            else if (!grid[i][j].left && !grid[i-1][j].solveVisited)
+            {
+                i--;
+                current = grid[i][j];
+                mazeSolveStack.push(current);
+                current.solveVisited = true;
+            }
+            else if (!grid[i][j].right && !grid[i+1][j].solveVisited)
+            {
+                i++;
+                current = grid [i][j];
+                mazeSolveStack.push(current);
+                current.solveVisited = true;
+            }
+            else
+            {
+                mazeSolveStack.pop();
+               current = mazeSolveStack.peek();
+               i = current.iValue;
+               j= current.jValue;
+            }
+
+        }
+        for (Cell x: mazeSolveStack)
+        {
+            System.out.println(x.iValue+" "+x.jValue);
+        }
+
     }
 
 }
