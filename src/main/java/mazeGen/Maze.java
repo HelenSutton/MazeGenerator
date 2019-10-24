@@ -6,7 +6,7 @@ import java.util.Stack;
 
 public class Maze
 {
-    int height = 50;
+    int height = 40;
     int width = 50;
     Cell grid[][];
     Random rand = new Random();
@@ -158,10 +158,6 @@ public class Maze
                j= current.jValue;
             }
 
-        }
-        for (Cell x: mazeSolveStack)
-        {
-            System.out.println(x.iValue+" "+x.jValue);
         }
 
     }
