@@ -7,6 +7,7 @@ public class MazeComponent extends JComponent {
     private static int startY = 5;
     private static int length = 10;
     Maze maze = new Maze();
+    public  void newMaze (){maze = new Maze(); repaint();}
 
 
     @Override
@@ -19,7 +20,7 @@ public class MazeComponent extends JComponent {
         g2.setColor(Color.RED);
         for (Cell x:maze.mazeSolveStack)
         {
-            g2.fillRect(startX +(x.iValue * length), startY + (x.jValue * length), length, length);
+            g2.fillRect(startX +(x.iValue * length) + 3, startY + (x.jValue * length)+3, length-6, length-6);
         }
 
         g.setColor(Color.BLACK);
