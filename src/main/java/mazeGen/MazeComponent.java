@@ -6,14 +6,23 @@ public class MazeComponent extends JComponent {
     private static int startX = 5;
     private static int startY = 5;
     private static int length = 10;
-    protected Maze maze = new Maze();
+    Maze maze = new Maze();
+    public  void newMaze (){maze = new Maze(); repaint();}
+
 
     @Override
     public void paintComponent(Graphics g)
     {
-        maze.createMaze();
+
         super.paintComponent(g);
+
         Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.RED);
+        for (Cell x:maze.mazeSolveStack)
+        {
+            g2.fillRect(startX +(x.iValue * length) + 3, startY + (x.jValue * length)+3, length-6, length-6);
+        }
+
         g.setColor(Color.BLACK);
         for (int i = 0; i < maze.width; i++)
         {
@@ -22,28 +31,33 @@ public class MazeComponent extends JComponent {
                 if (maze.grid[i][j].top)
                 {
                     g2.drawLine(startX +(i * length), startY + (j * length),
-                            startX + ((i++)*length), startY + (j * length));
+                            startX + ((i+1)*length), startY + (j * length));
                 }
                 if (maze.grid[i][j].bottom)
                 {
-                    g2.drawLine(startX +(i * length), startY + ((j++) * length),
-                            startX + ((i++)*length), startY + ((j++) * length));
+                    g2.drawLine(startX +(i * length), startY + ((j+1) * length),
+                            startX + ((i+1)*length), startY + ((j+1) * length));
 
                 }
                 if (maze.grid[i][j].right)
                 {
-                    g2.drawLine(startX +((i++) * length), startY + (j * length),
-                            startX + ((i++)*length), startY + ((j++) * length));
+                    g2.drawLine(startX +((i+1) * length), startY + (j * length),
+                            startX + ((i+1)*length), startY + ((j+1) * length));
 
                 }
                 if (maze.grid[i][j].left)
                 {
                     g2.drawLine(startX +(i * length), startY + (j * length),
-                            startX + (i*length), startY + ((j++) * length));
+                            startX + (i*length), startY + ((j+1) * length));
 
                 }
             }
         }
+    }
 
+    public void solve ()
+    {
+        maze.solveMaze();
+        repaint();
     }
 }
